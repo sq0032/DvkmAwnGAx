@@ -24,14 +24,18 @@ router.get('/:userId', runAsyncWrapper(
       return;
     }
 
-    const nextBillingDate = currentPlan.getNextBillingDate();
-    const isActive = currentPlan.isActive();
+    const firstActivePlan = user.getFirstActivePlan();
+
+    // Prepare output data
+    const startDate = user.getPlanStartDate();
+    const nextBillingDate = firstActivePlan ? firstActivePlan.getNextBillingDate() : '';
+    const isActive = user.isActive();
 
     const output = {
       userId: user.id,
       currentPlan: isActive ? currentPlan.storageSize : '',
-      startDate: currentPlan.startDate ? moment.utc(currentPlan.startDate).format('MMM DD, yyyy') : '',
-      nextBillingDate: nextBillingDate ? moment.utc(nextBillingDate).format('MMM DD, yyyy') : '',
+      startDate: startDate ? moment.utc(startDate).format('MMM D, yyyy') : '',
+      nextBillingDate: nextBillingDate ? moment.utc(nextBillingDate).format('MMM D, yyyy') : '',
       isActive,
     };
     res.json(output);
