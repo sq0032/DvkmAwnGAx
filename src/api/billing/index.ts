@@ -10,12 +10,10 @@ function runAsyncWrapper(callback: any) {
   }
 }
 
-// define the home page route
 router.get('/', function (req, res) {
-  res.send('Hello world');
+  res.send('Endpoint: /{userId}');
 })
 
-// define the about route
 router.get('/:userId', runAsyncWrapper(
   async (req: express.Request, res: express.Response) => {
     const user = await UserRepo.fetchUserById(req.params.userId);
@@ -32,8 +30,8 @@ router.get('/:userId', runAsyncWrapper(
     const output = {
       userId: user.id,
       currentPlan: isActive ? currentPlan.storageSize : '',
-      startDate: currentPlan.startDate ? moment(currentPlan.startDate).format('MMM DD, yyyy') : '',
-      nextBillingDate: nextBillingDate ? moment(nextBillingDate).format('MMM DD, yyyy') : '',
+      startDate: currentPlan.startDate ? moment.utc(currentPlan.startDate).format('MMM DD, yyyy') : '',
+      nextBillingDate: nextBillingDate ? moment.utc(nextBillingDate).format('MMM DD, yyyy') : '',
       isActive,
     };
     res.json(output);

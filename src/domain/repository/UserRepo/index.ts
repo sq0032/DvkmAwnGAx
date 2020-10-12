@@ -1,7 +1,7 @@
-import User from '../../entity/User';
 import neatCsv from 'neat-csv';
 import moment from 'moment';
 import fs from 'fs';
+import User from '../../entity/User';
 import Plan from '../../entity/Plan';
 
 const parseDate = (dateString: string): Date => {
